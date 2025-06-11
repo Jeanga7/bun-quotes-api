@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bun Quotes API</title>
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+    :root {
+      --primary-color: #3b82f6;
+      --background-color: #f9fafb;
+      --card-background: #ffffff;
+      --text-color: #1f2937;
+      --border-color: #e5e7eb;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    h1, h2 {
+      color: var(--text-color);
+      margin-top: 0;
+    }
+
+    .card {
+      background-color: var(--card-background);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
+    }
+
+    blockquote {
+      font-size: 1.2rem;
+      padding: 1rem;
+      margin: 0 0 1rem 0;
+      border-left: 4px solid var(--primary-color);
+      background-color: #f0f4ff;
+      border-radius: 0.25rem;
+    }
+
+    button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 0.375rem;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    button:hover {
+      background-color: #2563eb;
+    }
+
+    .input-group {
+      display: flex;
+    }
+
+    input {
+      flex-grow: 1;
+      padding: 0.6rem;
+      font-size: 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 0.375rem 0 0 0.375rem;
+      border-right: none;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
+    }
+
+    .input-group button {
+      border-radius: 0 0.375rem 0.375rem 0;
+    }
+
+    #all-quotes-list {
+      list-style: none;
+      padding: 0;
+      margin-top: 1rem;
+    }
+
+    #all-quotes-list blockquote {
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>✨ Citation du jour</h1>
+      <blockquote id="quote">Chargement...</blockquote>
+      <button onclick="fetchQuote()">Nouvelle citation</button>
+    </div>
+
+    <div class="card">
+      <h2>➕ Ajouter une citation</h2>
+      <div class="input-group">
+        <input id="new-quote" placeholder="Votre citation..." />
+        <button onclick="addQuote()">Ajouter</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📚 Toutes les citations</h2>
+      <button onclick="fetchAllQuotes()">Afficher toutes les citations</button>
+      <ul id="all-quotes-list"></ul>
+    </div>
+  </div>
+
+  <script>
+    async function fetchQuote() {
+      const res = await fetch("/quote");
+      const data = await res.json();
+      document.getElementById("quote").innerText = data.quote;
+    }
+
+    async function addQuote() {
+      const input = document.getElementById("new-quote");
+      const quote = input.value.trim();
+      if (!quote) return alert("Entrez une citation !");
+      const res = await fetch("/quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ quote })
+      });
+      const data = await res.json();
+      alert("Ajouté ✅ : " + data.quote);
+      input.value = "";
+      fetchQuote();
+    }
+
+    async function fetchAllQuotes() {
+      const res = await fetch("/quotes");
+      const data = await res.json();
+      const list = document.getElementById("all-quotes-list");
+      list.innerHTML = ""; // Vide la liste précédente
+      data.quotes.forEach(quote => {
+        const item = document.createElement("blockquote");
+        item.textContent = quote;
+        list.appendChild(item);
+      });
+    }
+
+    // Affiche une première citation
+    fetchQuote();
+  </script>
+</body>
+</html>
