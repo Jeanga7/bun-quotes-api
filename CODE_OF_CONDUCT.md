@@ -40,6 +40,15 @@ Les cas de comportement abusif, harcelant ou autrement inacceptable peuvent êtr
 
 Tous les responsables de la communauté sont tenus de respecter la vie privée et la sécurité de la personne qui signale un incident.
 
+## 🛟 Signalement
+
+Si tu observes un comportement inapproprié, tu peux contacter l’auteur du projet via :
+
+- Medium : [@jeangabrielgoudiaby](https://medium.com/@jeangabrielgoudiaby)
+- Instagram : [@jeanga7](https://www.instagram.com/jeanga7/)
+
+Toutes les remarques seront traitées avec discrétion.
+
 ## Attribution
 
 Ce Code de Conduite est adapté du [Contributor Covenant][homepage], version 2.1, disponible à l'adresse [https://www.contributor-covenant.org/version/2/1/code_of_conduct.html][v2.1].
